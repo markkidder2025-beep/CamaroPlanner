@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Camaro Build"/>
+<meta name="theme-color" content="#0c0f14"/>
+<title>1989 Camaro Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #0c0f14;
+  --surface: #131820;
+  --card: #181f2a;
+  --card2: #1e2738;
+  --border: #222d3e;
+  --border2: #2a3850;
+  --accent: #ff4500;
+  --accent2: #ff6a35;
+  --green: #00e676;
+  --yellow: #ffd600;
+  --red: #ff4444;
+  --text: #eceef2;
+  --muted: #5a6880;
+  --muted2: #38475a;
+  --font-d: 'Bebas Neue', sans-serif;
+  --font-m: 'DM Mono', monospace;
+  --font-b: 'DM Sans', sans-serif;
+  --nav-h: 64px;
+  --top-h: 56px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ TOP HEADER ══ */
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--top-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 100;
+  gap: 12px;
+}
+.header-logo {
+  font-family: var(--font-d);
+  font-size: 22px;
+  letter-spacing: 2px;
+  flex: 1;
+}
+.header-logo span { color: var(--accent); }
+.header-pct {
+  font-family: var(--font-m);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.header-ai-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #fff;
+  font-family: var(--font-d);
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ai-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: 0.8; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:0.8}50%{opacity:0.3} }
+
+/* ══ SCROLL AREA ══ */
+.page {
+  position: fixed;
+  top: var(--top-h);
+  left: 0; right: 0;
+  bottom: calc(var(--nav-h) + var(--safe-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: none;
+}
+.page.active { display: block; }
+
+.page-inner {
+  padding: 14px 14px 20px;
+}
+
+/* ══ BOTTOM NAV ══ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+}
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  transition: color 0.15s;
+  padding: 8px 4px;
+  position: relative;
+}
+.nav-tab.active { color: var(--accent); }
+.nav-tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 0 0 3px 3px;
+}
+.nav-icon { font-size: 20px; line-height: 1; }
+.nav-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ══ PROGRESS BANNER ══ */
+.prog-banner {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.prog-nums {
+  display: flex;
+  gap: 20px;
+}
+.pn { text-align: center; }
+.pn-val { font-family: var(--font-d); font-size: 28px; line-height: 1; }
+.pn-val.accent { color: var(--accent); }
+.pn-lbl { font-family: var(--font-m); font-size: 9px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.pct-big { font-family: var(--font-d); font-size: 42px; color: var(--text); line-height: 1; }
+.prog-bar-track { height: 4px; background: var(--border2); border-radius: 99px; overflow: hidden; }
+.prog-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s; }
+
+/* ══ SEARCH BAR ══ */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.search-input {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 15px;
+  outline: none;
+}
+.search-input::placeholder { color: var(--muted2); }
+.search-input:focus { border-color: var(--accent); }
+
+/* ══ FILTER PILLS ══ */
+.filter-row {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.pill {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 99px;
+  padding: 7px 16px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ══ SECTION ACCORDIONS ══ */
+.section-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.sec-icon-box {
+  width: 36px; height: 36px;
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d);
+  font-size: 16px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.section-card.open .sec-icon-box { background: var(--accent); color: #fff; border-color: var(--accent); }
+.sec-info { flex: 1; }
+.sec-title { font-family: var(--font-d); font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; }
+.sec-sub { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-top: 2px; }
+.sec-right { display: flex; align-items: center; gap: 10px; }
+.sec-ring { width: 36px; height: 36px; flex-shrink: 0; }
+.ring-bg { stroke: var(--border2); fill: none; stroke-width: 3.5; }
+.ring-fg { stroke: var(--green); fill: none; stroke-width: 3.5; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 0.4s; }
+.sec-chev { font-size: 13px; color: var(--muted2); transition: transform 0.2s; }
+.section-card.open .sec-chev { transform: rotate(180deg); }
+
+.section-items { display: none; border-top: 1px solid var(--border); }
+.section-card.open .section-items { display: block; }
+
+.item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 16px;
+  border-bottom: 1px solid #0e141d;
+  cursor: pointer;
+  transition: background 0.1s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.item-row:last-child { border-bottom: none; }
+.item-row:active { background: var(--card2); }
+
+.item-cb {
+  width: 22px; height: 22px;
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  background: transparent;
+}
+.item-row.done .item-cb { background: var(--green); border-color: var(--green); }
+.item-cb-check { display: none; color: #000; font-size: 13px; font-weight: 700; }
+.item-row.done .item-cb-check { display: block; }
+
+.item-content { flex: 1; }
+.item-label { font-size: 14px; color: var(--text); line-height: 1.4; }
+.item-note { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.item-row.done .item-label { text-decoration: line-through; color: var(--muted); }
+
+/* ══ NOTES PAGE ══ */
+.notes-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.notes-search {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 15px;
+  outline: none;
+}
+.notes-search::placeholder { color: var(--muted2); }
+.notes-search:focus { border-color: var(--accent); }
+.notes-select {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 11px 12px;
+  color: var(--text);
+  font-family: var(--font-m);
+  font-size: 11px;
+  outline: none;
+  -webkit-appearance: none;
+  min-width: 120px;
+}
+
+.note-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.note-card-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.note-card-sec { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+.note-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.note-field { display: flex; flex-direction: column; gap: 3px; }
+.note-field.full { grid-column: 1 / -1; }
+.note-field-label {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.note-input {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 9px 11px;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+}
+.note-input:focus { border-color: var(--accent); }
+.note-input::placeholder { color: var(--muted2); }
+
+/* ══ BUDGET PAGE ══ */
+.budget-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.b-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.b-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent);
+}
+.b-card-lbl { font-family: var(--font-m); font-size: 9px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.b-card-val { font-family: var(--font-d); font-size: 26px; line-height: 1; }
+.b-card-val.hi { color: var(--accent); }
+.b-card-val.pos { color: var(--green); }
+.b-card-val.neg { color: var(--red); }
+
+.budget-goal-row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.budget-goal-lbl { font-family: var(--font-m); font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+.budget-goal-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--font-d);
+  font-size: 20px;
+  outline: none;
+}
+.budget-goal-input:focus { border-color: var(--accent); }
+.budget-goal-input::placeholder { color: var(--muted2); }
+
+.budget-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.budget-item-info { flex: 1; }
+.budget-item-name { font-size: 13px; font-weight: 500; }
+.budget-item-sec { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-top: 2px; }
+.budget-cost-input {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-family: var(--font-d);
+  font-size: 16px;
+  width: 90px;
+  text-align: right;
+  outline: none;
+}
+.budget-cost-input:focus { border-color: var(--accent); }
+
+/* ══ BUILD ORDER PAGE ══ */
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.phase-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.phase-num-badge {
+  width: 36px; height: 36px;
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d);
+  font-size: 18px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.phase-card.open .phase-num-badge { background: var(--accent); color: #fff; border-color: var(--accent); }
+.phase-info { flex: 1; }
+.phase-title { font-family: var(--font-d); font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; }
+.phase-sub { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.phase-chev { font-size: 13px; color: var(--muted2); transition: transform 0.2s; flex-shrink: 0; }
+.phase-card.open .phase-chev { transform: rotate(180deg); }
+
+.phase-steps { display: none; border-top: 1px solid var(--border); padding: 10px 16px; }
+.phase-card.open .phase-steps { display: block; }
+.phase-step {
+  display: flex; gap: 10px;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 1px solid #0e141d;
+  line-height: 1.5;
+}
+.phase-step:last-child { border-bottom: none; }
+.step-arr { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+/* ══ TORQUE PAGE ══ */
+.torque-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.torque-section-title {
+  font-family: var(--font-d);
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 13px 16px;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+}
+.torque-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #0e141d;
+  gap: 12px;
+}
+.torque-row:last-child { border-bottom: none; }
+.torque-name { font-size: 13px; font-weight: 500; flex: 1; }
+.torque-note-t { font-family: var(--font-m); font-size: 10px; color: var(--muted); margin-top: 2px; }
+.torque-val {
+  font-family: var(--font-d);
+  font-size: 18px;
+  color: var(--text);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* ══ PROBLEMS PAGE ══ */
+.prob-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.prob-strip {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+}
+.sev-high .prob-strip { background: var(--red); }
+.sev-med .prob-strip { background: var(--yellow); }
+.sev-low .prob-strip { background: var(--green); }
+
+.prob-inner { padding: 14px 14px 14px 20px; }
+.prob-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.prob-name { font-family: var(--font-d); font-size: 17px; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; flex: 1; }
+.sev-badge {
+  font-family: var(--font-m);
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sev-high .sev-badge { background: rgba(255,68,68,0.15); color: var(--red); border: 1px solid rgba(255,68,68,0.3); }
+.sev-med .sev-badge { background: rgba(255,214,0,0.1); color: var(--yellow); border: 1px solid rgba(255,214,0,0.2); }
+.sev-low .sev-badge { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.2); }
+.prob-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+.prob-fix { font-size: 13px; color: var(--text); line-height: 1.6; }
+.prob-fix strong { color: var(--accent); }
+
+/* ══ CHAT DRAWER ══ */
+.chat-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(5,8,14,0.75);
+  z-index: 200;
+  display: none;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.chat-backdrop.open { display: block; }
+
+.chat-drawer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 85vh;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.34,1.1,0.64,1);
+}
+.chat-drawer.open { transform: translateY(0); }
+
+.chat-drag-handle {
+  width: 40px; height: 4px;
+  background: var(--border2);
+  border-radius: 99px;
+  margin: 10px auto 0;
+  flex-shrink: 0;
+}
+.chat-top {
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat-title {
+  font-family: var(--font-d);
+  font-size: 20px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-x {
+  width: 30px; height: 30px;
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.api-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.api-input {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-family: var(--font-m);
+  font-size: 12px;
+  outline: none;
+}
+.api-input:focus { border-color: var(--accent); }
+.api-input::placeholder { color: var(--muted2); }
+.api-save-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: var(--font-d);
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+.chat-msg { display: flex; gap: 8px; }
+.chat-msg.user { flex-direction: row-reverse; }
+.chat-av {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.chat-msg.ai .chat-av { background: var(--card2); border: 1px solid var(--border2); color: var(--muted); }
+.chat-msg.user .chat-av { background: var(--accent); color: #fff; }
+.chat-bubble {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 80%;
+}
+.chat-msg.user .chat-bubble { background: rgba(255,69,0,0.12); border-color: rgba(255,69,0,0.25); }
+.chat-bubble.typing { color: var(--muted); font-style: italic; font-family: var(--font-m); font-size: 12px; }
+
+.chat-notice {
+  padding: 6px 16px;
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--muted2);
+  text-align: center;
+  flex-shrink: 0;
+}
+.chat-notice a { color: var(--accent); text-decoration: none; }
+
+.chat-input-area {
+  padding: 10px 16px;
+  padding-bottom: calc(10px + var(--safe-bottom));
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.chat-textarea {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 15px;
+  resize: none;
+  height: 44px;
+  outline: none;
+}
+.chat-textarea:focus { border-color: var(--accent); }
+.chat-textarea::placeholder { color: var(--muted2); }
+.chat-send-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 11px 18px;
+  color: #fff;
+  font-family: var(--font-d);
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.chat-send-btn:disabled { background: var(--border2); color: var(--muted2); }
+
+/* ══ SYNC STATUS ══ */
+.sync-bar {
+  position: fixed;
+  top: var(--top-h); left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+  z-index: 99;
+}
+.sync-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--green);
+  transition: width 0.4s, opacity 0.5s;
+  opacity: 0;
+}
+.sync-bar-fill.active { width: 100%; opacity: 1; }
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  margin-right: 5px;
+  flex-shrink: 0;
+}
+.sync-dot.offline { background: var(--red); animation: none; }
+.sync-dot.syncing { background: var(--yellow); animation: pulse 0.8s infinite; }
+.sync-dot.live { animation: pulse 2s infinite; }
+.header-sync {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* ══ ACTIVITY TOAST ══ */
+.activity-toast {
+  position: fixed;
+  top: calc(var(--top-h) + 8px);
+  left: 50%; transform: translateX(-50%);
+  background: var(--card2);
+  border: 1px solid rgba(0,230,118,0.3);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--green);
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.activity-toast.show { opacity: 1; }
+
+/* Section page view label */
+.view-label {
+  font-family: var(--font-d);
+  font-size: 30px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.view-label span { color: var(--accent); }
+.view-sublabel {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOP HEADER -->
+<div class="top-header">
+  <div class="header-logo">CAMARO <span>'89</span></div>
+  <div class="header-pct" id="hdr-pct">0%</div>
+  <div class="header-sync"><span class="sync-dot syncing" id="sync-dot"></span><span id="sync-label">SYNC</span></div>
+  <button class="header-ai-btn" id="ai-open-btn">
+    <div class="ai-dot"></div> AI
+  </button>
+</div>
+<div class="sync-bar"><div class="sync-bar-fill" id="sync-bar-fill"></div></div>
+<div class="activity-toast" id="activity-toast"></div>
+
+<!-- ══ PAGE: CHECKLIST ══ -->
+<div class="page active" id="page-checklist">
+  <div class="page-inner">
+    <div class="prog-banner">
+      <div class="prog-row">
+        <div class="prog-nums">
+          <div class="pn"><div class="pn-val accent" id="p-done">0</div><div class="pn-lbl">Done</div></div>
+          <div class="pn"><div class="pn-val" id="p-left">0</div><div class="pn-lbl">Left</div></div>
+          <div class="pn"><div class="pn-val" id="p-total">0</div><div class="pn-lbl">Total</div></div>
+        </div>
+        <div class="pct-big" id="p-pct">0%</div>
+      </div>
+      <div class="prog-bar-track"><div class="prog-bar-fill" id="p-fill" style="width:0%"></div></div>
+    </div>
+    <div class="search-bar">
+      <input class="search-input" id="search" type="text" placeholder="🔍  Search parts…" />
+    </div>
+    <div class="filter-row">
+      <div class="pill active" data-f="all">All</div>
+      <div class="pill" data-f="todo">To Do</div>
+      <div class="pill" data-f="done">Done</div>
+    </div>
+    <div id="sections"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: NOTES ══ -->
+<div class="page" id="page-notes">
+  <div class="page-inner">
+    <div class="view-label">NOTES & <span>SOURCE</span></div>
+    <div class="view-sublabel">Vendor · Part # · Cost · Notes per part</div>
+    <div class="notes-filters">
+      <input class="notes-search" id="notes-search" type="text" placeholder="Search…" />
+      <select class="notes-select" id="notes-select">
+        <option value="">All</option>
+      </select>
+    </div>
+    <div id="notes-list"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: BUDGET ══ -->
+<div class="page" id="page-budget">
+  <div class="page-inner">
+    <div class="view-label">BUDGET <span>TRACKER</span></div>
+    <div class="view-sublabel">Log costs · Syncs with Notes</div>
+    <div class="budget-cards">
+      <div class="b-card"><div class="b-card-lbl">Spent</div><div class="b-card-val hi" id="b-spent">$0</div></div>
+      <div class="b-card"><div class="b-card-lbl">Parts Logged</div><div class="b-card-val" id="b-logged">0</div></div>
+      <div class="b-card"><div class="b-card-lbl">Goal</div><div class="b-card-val" id="b-goal-disp">—</div></div>
+      <div class="b-card"><div class="b-card-lbl">Remaining</div><div class="b-card-val pos" id="b-remain">—</div></div>
+    </div>
+    <div class="budget-goal-row">
+      <div class="budget-goal-lbl">Budget $</div>
+      <input class="budget-goal-input" id="budget-goal" type="number" placeholder="e.g. 15000" />
+    </div>
+    <div id="budget-list"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: BUILD ORDER ══ -->
+<div class="page" id="page-buildorder">
+  <div class="page-inner">
+    <div class="view-label">BUILD <span>ORDER</span></div>
+    <div class="view-sublabel">Tap a phase to expand steps</div>
+    <div id="build-list"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: REFERENCE (Torque + Problems) ══ -->
+<div class="page" id="page-ref">
+  <div class="page-inner">
+    <div class="view-label">REF <span>GUIDE</span></div>
+    <div class="filter-row" style="margin-bottom:14px;">
+      <div class="pill active" data-ref="torque">⚙️ Torque Specs</div>
+      <div class="pill" data-ref="problems">⚠️ Problems</div>
+    </div>
+    <div id="ref-torque"></div>
+    <div id="ref-problems" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" data-page="checklist">
+    <div class="nav-icon">✓</div>
+    <div class="nav-label">Parts</div>
+  </button>
+  <button class="nav-tab" data-page="notes">
+    <div class="nav-icon">📝</div>
+    <div class="nav-label">Notes</div>
+  </button>
+  <button class="nav-tab" data-page="budget">
+    <div class="nav-icon">💰</div>
+    <div class="nav-label">Budget</div>
+  </button>
+  <button class="nav-tab" data-page="buildorder">
+    <div class="nav-icon">🔧</div>
+    <div class="nav-label">Order</div>
+  </button>
+  <button class="nav-tab" data-page="ref">
+    <div class="nav-icon">📖</div>
+    <div class="nav-label">Ref</div>
+  </button>
+</nav>
+
+<!-- ══ CHAT DRAWER ══ -->
+<div class="chat-backdrop" id="chat-backdrop"></div>
+<div class="chat-drawer" id="chat-drawer">
+  <div class="chat-drag-handle"></div>
+  <div class="chat-top">
+    <div class="chat-title"><div class="ai-dot"></div> BUILD AI</div>
+    <div class="chat-x" id="chat-close">✕</div>
+  </div>
+  <div class="api-row">
+    <input class="api-input" id="api-key" type="password" placeholder="Paste Anthropic API key…" />
+    <button class="api-save-btn" id="api-save">SAVE</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs">
+    <div class="chat-msg ai">
+      <div class="chat-av">AI</div>
+      <div class="chat-bubble">Hey! I'm your 1989 Gen 3 Camaro build assistant. Ask me anything — parts, TBI tuning, suspension, track prep, you name it.</div>
+    </div>
+  </div>
+  <div class="chat-notice" id="no-key-msg">
+    Get a free API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+  </div>
+  <div class="chat-input-area">
+    <textarea class="chat-textarea" id="chat-input" placeholder="Ask about your build…"></textarea>
+    <button class="chat-send-btn" id="chat-send" disabled>↑</button>
+  </div>
+</div>
+
+
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const DATA = [
+  { section:"Engine", icon:"E", items:[
+    {label:"Engine block (305 or 350 SBC)",note:"Short or long block depending on build spec"},
+    {label:"Cylinder heads",note:"Stock cast iron or aluminum aftermarket (e.g. Vortec)"},
+    {label:"Head gaskets (x2)"},{label:"Intake manifold",note:"Stock TBI dual-plane"},
+    {label:"TBI throttle body unit (700 or 220)",note:"700 for 350, 220 for 305"},
+    {label:"TBI fuel injectors (x2)"},{label:"TBI fuel pressure regulator"},
+    {label:"Cam shaft"},{label:"Cam bearings"},
+    {label:"Lifters (x16)",note:"Hydraulic flat-tappet stock or roller upgrade"},
+    {label:"Push rods (x16)"},{label:"Rocker arms & studs (x16)"},
+    {label:"Timing chain & gears"},{label:"Timing cover"},{label:"Timing cover gasket"},
+    {label:"Crankshaft"},{label:"Main bearings"},{label:"Rod bearings"},
+    {label:"Connecting rods (x8)"},{label:"Pistons (x8)"},{label:"Piston rings (x8 sets)"},
+    {label:"Oil pump"},{label:"Oil pump drive shaft"},
+    {label:"Oil pan",note:"F-body specific pan required for clearance"},
+    {label:"Oil pan gasket"},{label:"Oil dipstick & tube"},
+    {label:"Valve covers (x2)"},{label:"Valve cover gaskets (x2)"},
+    {label:"Harmonic balancer"},
+    {label:"Flexplate or flywheel",note:"Flexplate for auto, flywheel for manual"},
+    {label:"Engine mount brackets (x2)",note:"F-body specific"},
+    {label:"Engine mounts (x2)"},{label:"Rear main seal"},
+    {label:"Front crank seal"},{label:"Freeze plugs (full set)"},
+  ]},
+  { section:"Induction & Fuel", icon:"F", items:[
+    {label:"Air cleaner assembly / cold air intake"},
+    {label:"Throttle body gasket"},{label:"IAC (idle air control) valve"},
+    {label:"MAP sensor"},{label:"TPS (throttle position sensor)"},
+    {label:"Fuel tank",note:"Stock 15.5 gal or aftermarket"},
+    {label:"Fuel pump (in-tank)",note:"Must support TBI fuel pressure ~9-13 psi"},
+    {label:"Fuel sending unit"},
+    {label:"Fuel lines (supply & return)",note:"Full run frame to engine"},
+    {label:"Fuel filter"},{label:"Fuel rails & fittings"},
+  ]},
+  { section:"Ignition & Electronics", icon:"I", items:[
+    {label:"ECM (Engine Control Module)",note:"1989 specific — VIN match or retuned unit"},
+    {label:"MEMCAL chip",note:"Calibration chip inside ECM"},
+    {label:"Distributor (HEI)",note:"Standard HEI dist. — not Optispark"},
+    {label:"Distributor cap & rotor"},{label:"Ignition coil (in-cap)"},
+    {label:"Spark plugs (x8)"},{label:"Spark plug wires (x8)"},
+    {label:"Crankshaft position sensor"},
+    {label:"Coolant temp sensor (ECM)"},{label:"Coolant temp sensor (gauge)"},
+    {label:"Oxygen sensor (x1 upstream)"},{label:"Vehicle speed sensor"},
+    {label:"MAT sensor (manifold air temp)"},
+    {label:"Engine wiring harness",note:"Full TBI harness — chassis and engine side"},
+    {label:"Body wiring harness"},{label:"Fuse block / junction box"},
+    {label:"Battery"},{label:"Battery cables (pos & neg)"},
+    {label:"Alternator"},{label:"Alternator bracket"},
+    {label:"Starter motor"},{label:"Starter solenoid"},
+  ]},
+  { section:"Cooling System", icon:"C", items:[
+    {label:"Radiator",note:"Aluminum 2-row or 3-row recommended for track use"},
+    {label:"Radiator hoses (upper & lower)"},
+    {label:"Thermostat & housing",note:"195°F standard"},
+    {label:"Thermostat housing gasket"},{label:"Water pump"},{label:"Water pump gaskets"},
+    {label:"Radiator overflow tank"},{label:"Radiator cap"},
+    {label:"Electric cooling fan(s)",note:"Dual electric fans recommended"},
+    {label:"Fan relay & wiring"},{label:"Heater core"},
+    {label:"Heater hoses"},{label:"Heater box / HVAC assembly"},
+  ]},
+  { section:"Exhaust", icon:"X", items:[
+    {label:"Exhaust manifolds or headers",note:"Long-tube headers add significant power for track"},
+    {label:"Exhaust manifold gaskets (x2)"},
+    {label:"O2 sensor bung (if using headers)"},
+    {label:"Mid-pipes / Y-pipe"},
+    {label:"Catalytic converter (if street legal required)"},
+    {label:"Mufflers (x1 or x2)"},{label:"Exhaust tips"},
+    {label:"Exhaust hangers & hardware"},
+  ]},
+  { section:"Transmission & Drivetrain", icon:"T", items:[
+    {label:"Transmission",note:"700R4 auto or T5/T56 manual — T56 preferred for track"},
+    {label:"Transmission crossmember"},{label:"Transmission mount"},
+    {label:"Transmission cooler lines (if auto)"},{label:"Transmission cooler (if auto)"},
+    {label:"Torque converter (if auto)"},
+    {label:"Clutch kit: disc, pressure plate, throwout bearing (if manual)"},
+    {label:"Clutch master & slave cylinder (if manual)"},
+    {label:"Shifter assembly"},{label:"Shifter boot & bezel"},
+    {label:"Driveshaft",note:"Steel or aluminum one-piece — measure for your combo"},
+    {label:"Driveshaft U-joints (front & rear)"},
+    {label:"Rear axle / differential",note:"7.5 or 8.5 10-bolt, or 12-bolt upgrade for track"},
+    {label:"Axle shafts (x2)"},{label:"Axle bearings & seals"},
+    {label:"Differential cover & gasket"},{label:"Pinion seal"},
+    {label:"Posi / limited-slip unit",note:"Highly recommended for track use"},
+    {label:"Ring & pinion gear set"},
+  ]},
+  { section:"Suspension & Steering", icon:"S", items:[
+    {label:"Front subframe / cradle"},
+    {label:"Control arms — upper front (x2)"},{label:"Control arms — lower front (x2)"},
+    {label:"Front upper ball joints (x2)"},{label:"Front lower ball joints (x2)"},
+    {label:"Front coilover springs or springs + shocks",note:"Aftermarket coilovers recommended for track"},
+    {label:"Front sway bar"},{label:"Front sway bar end links & bushings"},
+    {label:"Front sway bar frame bushings"},{label:"Rear torque arm"},
+    {label:"Rear torque arm bushings"},{label:"Rear track bar / panhard bar"},
+    {label:"Rear springs"},{label:"Rear shocks (x2)"},{label:"Rear sway bar"},
+    {label:"Rear sway bar links & bushings"},{label:"Rear control arm bushings (full set)"},
+    {label:"Steering rack or steering box",note:"Rack & pinion swap popular for track use"},
+    {label:"Steering column"},{label:"Steering shaft & u-joints"},
+    {label:"Steering wheel"},
+    {label:"Power steering pump (if applicable)"},{label:"Power steering hoses & reservoir"},
+    {label:"Tie rods (inner & outer x2 each)"},
+    {label:"Alignment specs / caster-camber plates",note:"Adjustable plates useful for track alignment"},
+  ]},
+  { section:"Brakes", icon:"B", items:[
+    {label:"Front brake calipers (x2)"},
+    {label:"Front brake rotors (x2)",note:"Slotted or cross-drilled for track"},
+    {label:"Front brake pads"},
+    {label:"Rear brake drums or rotors (x2)",note:"Disc conversion recommended for track use"},
+    {label:"Rear brake shoes or pads"},
+    {label:"Rear calipers (x2, if disc conversion)"},
+    {label:"Brake master cylinder"},{label:"Brake booster"},
+    {label:"Brake proportioning valve"},
+    {label:"Brake lines (full set, front to rear)"},
+    {label:"Brake hoses — flexible (x4)"},{label:"Brake fluid reservoir"},
+    {label:"Parking brake cables"},{label:"ABS module (if retaining factory ABS)"},
+  ]},
+  { section:"Wheels & Tires", icon:"W", items:[
+    {label:"Wheels (x4)",note:"16\" or 17\" aftermarket common; verify backspacing"},
+    {label:"Tires (x4)",note:"Performance all-season or dedicated track rubber"},
+    {label:"Lug nuts (x20)"},{label:"Hub-centric rings (if needed)"},
+    {label:"Wheel spacers (optional, for track fitment)"},
+    {label:"TPMS sensors (if required for street)"},
+  ]},
+  { section:"Body & Exterior", icon:"O", items:[
+    {label:"Frame / unibody (your starting point)"},
+    {label:"Front bumper cover"},{label:"Rear bumper cover"},
+    {label:"Front fenders (x2)"},{label:"Hood"},{label:"Hood hinges (x2)"},
+    {label:"Hood latch & release cable"},{label:"Doors (x2)"},{label:"Door hinges (x4)"},
+    {label:"Door handles — exterior (x2)"},{label:"Door handles — interior (x2)"},
+    {label:"Door latches (x2)"},{label:"Door weatherstripping (x2)"},
+    {label:"Hatch / T-top or roof panel",note:"T-tops need glass panels & seals"},
+    {label:"Hatch struts or hinges"},{label:"Hatch latch"},
+    {label:"Rocker panels (x2)"},{label:"Quarter panels (x2)"},
+    {label:"Rear valance"},{label:"Ground effects / body kit (optional)"},
+    {label:"Windshield"},{label:"Rear hatch glass"},{label:"Quarter glass (x2)"},
+    {label:"Windshield trim & molding"},
+    {label:"Windshield washer nozzles & hose"},
+    {label:"Windshield washer reservoir & pump"},
+    {label:"Windshield wipers & arms"},{label:"Wiper motor"},
+    {label:"Mirrors — exterior (x2)"},
+    {label:"Headlight assemblies (x2)",note:"Aero composite headlight style for '89"},
+    {label:"Parking / turn signal lights — front (x2)"},
+    {label:"Tail light assemblies (x2)"},{label:"Third brake light"},
+    {label:"License plate light"},{label:"Antenna & radio antenna cable"},
+    {label:"Emblems & badges"},{label:"Paint & primer"},
+    {label:"Undercoating / rust protection"},
+  ]},
+  { section:"Interior", icon:"N", items:[
+    {label:"Dashboard / instrument cluster panel"},
+    {label:"Instrument cluster (gauges)"},{label:"Speedometer cable or VSS"},
+    {label:"Center console"},
+    {label:"Seats — front (x2)",note:"OEM buckets or aftermarket sport/race seats"},
+    {label:"Seat tracks / sliders (x2)"},{label:"Rear seat or delete panel"},
+    {label:"Door panels (x2)"},{label:"Door panel clips & hardware"},
+    {label:"Carpet set"},{label:"Floor mats"},{label:"Headliner"},
+    {label:"A-pillar trim (x2)"},{label:"B-pillar trim (x2)"},
+    {label:"Hatch trim panel"},{label:"Sill plates / kick panels (x2)"},
+    {label:"Sun visors (x2)"},{label:"Rearview mirror"},
+    {label:"Steering column shroud"},{label:"Horn"},
+    {label:"Seat belts — front (x2)"},{label:"Seat belts — rear"},
+    {label:"Radio / head unit"},{label:"Speakers"},
+    {label:"HVAC controls & switches"},{label:"HVAC ducting & vents"},
+    {label:"Blower motor & resistor"},
+    {label:"A/C compressor (if retaining A/C)"},
+    {label:"A/C condenser & lines (if retaining A/C)"},
+    {label:"A/C evaporator (if retaining A/C)"},
+    {label:"Glove box & latch"},{label:"Parking brake handle & boot"},
+  ]},
+  { section:"Safety & Track Prep", icon:"P", items:[
+    {label:"Roll bar or roll cage",note:"Minimum roll bar for any track use"},
+    {label:"Fire extinguisher & mount"},
+    {label:"Racing harness (x2, if tracking regularly)",note:"5-point recommended with cage/bar"},
+    {label:"Helmet (personal safety item)"},{label:"Battery cut-off switch"},
+    {label:"Coolant overflow catch can",note:"Required at most tracks"},
+    {label:"Oil catch can (PCV)"},{label:"Data logger / lap timer (optional)"},
+  ]},
+  { section:"Hardware & Misc", icon:"H", items:[
+    {label:"Full bolt kit for engine assembly"},
+    {label:"Exhaust manifold studs & nuts"},
+    {label:"Header bolts (if using headers)"},
+    {label:"Radiator mounting hardware"},{label:"RTV silicone sealant"},
+    {label:"Thread locker (blue & red)"},
+    {label:"Brake cleaner, degreaser, assembly lube"},
+    {label:"Engine assembly lube"},{label:"High-temp anti-seize"},
+    {label:"All fluids: motor oil, coolant, brake fluid, gear oil, power steering fluid, ATF"},
+    {label:"Shop supplies: rags, gloves, zip ties, wire loom"},
+    {label:"VIN plate & documentation"},
+  ]},
+];
+
+const BUILD_ORDER = [
+  {phase:1,title:"Frame Prep & Inspection",sub:"The foundation — everything else depends on this",steps:["Strip, blast, and inspect the frame for cracks, rust, or damage","Repair any frame damage before proceeding","Apply chassis paint or POR-15 to the bare frame","Install body mounts and hardware while the frame is bare"]},
+  {phase:2,title:"Suspension & Steering",sub:"Do this while the frame is easy to access",steps:["Install front subframe/cradle and all front suspension components","Install upper and lower control arms, ball joints, sway bar","Install rear torque arm, panhard bar, rear shocks and springs","Install steering rack/box, column, shaft, and tie rods","Full alignment once body is on and weight is settled"]},
+  {phase:3,title:"Brakes & Axle",sub:"Get the rolling gear sorted before the drivetrain goes in",steps:["Install rear differential and axle shafts","Run rear brake lines and install rear brakes (disc conversion now if going that route)","Install front brake calipers, rotors, and hard lines","Install brake master cylinder and booster on firewall","Do not bleed yet — wait until all lines are run"]},
+  {phase:4,title:"Engine & Transmission Assembly",sub:"Build the drivetrain off the car, then drop it in",steps:["Fully assemble engine on a stand — install cam, heads, intake, TBI, front accessories","Prime the oil pump before first start","Assemble transmission and mate to engine on the stand","Install engine mounts and transmission crossmember on frame","Drop engine/trans assembly in as a unit"]},
+  {phase:5,title:"Fuel & Cooling Systems",sub:"Connect the life support",steps:["Install fuel tank, in-tank pump, and sending unit","Run fuel supply and return lines frame rail to engine","Install radiator, hoses, thermostat, and overflow tank","Wire electric fans and fan relay","Install heater core and heater hoses"]},
+  {phase:6,title:"Exhaust",sub:"Easier to fit before the body drops on",steps:["Install headers or exhaust manifolds — fit and weld O2 bung","Fabricate or fit mid-pipe/Y-pipe","Route exhaust rearward, hang mufflers and tips","Verify clearance from suspension and floor before tacking permanently"]},
+  {phase:7,title:"Wiring & Electronics",sub:"The most time-consuming phase — budget extra time",steps:["Install ECM in factory location","Route and connect engine wiring harness — TBI, sensors, injectors, distributor","Route and connect body harness — lights, gauges, switches","Install fuse block and battery cables","Install alternator and starter, verify grounds are solid","Test all circuits before body goes on"]},
+  {phase:8,title:"Body Drop",sub:"Big milestone — the car starts looking like a car",steps:["Set body onto frame, align body mounts","Install doors, hood, hatch — check panel gaps before any paint","Fit bumper covers and exterior trim for gap check","Send body for bodywork and paint now if not already done"]},
+  {phase:9,title:"Interior",sub:"Work from the outside in",steps:["Install heater box/HVAC assembly and ducting","Install dashboard, instrument cluster, and steering column","Lay carpet and install center console","Install seats and seat belts","Install door panels, trim, headliner, sun visors","Connect all interior wiring — gauges, radio, switches"]},
+  {phase:10,title:"Glass & Weatherstripping",sub:"Seal it up",steps:["Install windshield with fresh trim and molding","Install rear hatch glass and quarter glass","Install all door weatherstripping and seals","Install T-top glass and seals if applicable"]},
+  {phase:11,title:"Wheels, Tires & Final Assembly",sub:"Almost there",steps:["Mount tires on wheels and install on car","Bleed brakes fully and verify pedal feel","Fill all fluids: oil, coolant, brake fluid, gear oil, ATF, power steering","Check all connections, clamps, and fasteners one final time"]},
+  {phase:12,title:"Start-Up & Tuning",sub:"Fire it up",steps:["Crank with fuel pump fuse pulled to build oil pressure first","Prime TBI system and attempt first start","Check for leaks — coolant, oil, fuel — at operating temp","Set base ignition timing (0° BTDC for stock TBI, then tune)","Drive easy for first 500 miles to seat rings (vary throttle, avoid sustained high RPM)","Full alignment and corner balance for track prep"]},
+];
+
+const TORQUE_DATA = [
+  {category:"Engine — Short Block",specs:[
+    {name:"Main cap bolts",val:"70–80 ft-lb",note:"4-bolt mains: outer bolts 65 ft-lb"},
+    {name:"Connecting rod bolts",val:"45 ft-lb",note:"ARP rod bolts: follow ARP spec"},
+    {name:"Harmonic balancer bolt",val:"60 ft-lb",note:"Use thread locker"},
+    {name:"Flywheel / flexplate bolts",val:"60 ft-lb",note:"Apply thread locker"},
+    {name:"Oil pan bolts",val:"7–9 ft-lb",note:"Easy to strip — do not overtighten"},
+    {name:"Timing cover bolts",val:"6–9 ft-lb",note:""},
+    {name:"Rear main seal retainer",val:"11 ft-lb",note:""},
+  ]},
+  {category:"Cylinder Heads",specs:[
+    {name:"Head bolts — long",val:"65–70 ft-lb",note:"3 stages: 25 / 45 / 65 ft-lb"},
+    {name:"Head bolts — short",val:"65 ft-lb",note:""},
+    {name:"Rocker arm nuts",val:"20 ft-lb",note:"Zero lash + ¾ turn preload"},
+    {name:"Intake manifold bolts",val:"30–35 ft-lb",note:"Star pattern, 3 stages"},
+    {name:"Exhaust manifold bolts",val:"20–25 ft-lb",note:"Re-torque after first heat cycle"},
+    {name:"Valve cover bolts",val:"3–5 ft-lb",note:"Finger tight only"},
+  ]},
+  {category:"TBI & Induction",specs:[
+    {name:"TBI unit to intake bolts",val:"12 ft-lb",note:""},
+    {name:"Fuel injector retainer",val:"27 in-lb",note:"Inch-pounds"},
+    {name:"TBI fuel line fittings",val:"20 ft-lb",note:""},
+    {name:"MAP sensor screws",val:"35 in-lb",note:"Inch-pounds"},
+  ]},
+  {category:"Ignition & Accessories",specs:[
+    {name:"Distributor clamp bolt",val:"25 ft-lb",note:""},
+    {name:"Spark plugs",val:"15–20 ft-lb",note:"Cast iron — no anti-seize needed"},
+    {name:"Alternator bracket bolts",val:"30 ft-lb",note:""},
+    {name:"Water pump bolts",val:"15–20 ft-lb",note:""},
+  ]},
+  {category:"Transmission & Driveline",specs:[
+    {name:"700R4 to engine",val:"35 ft-lb",note:""},
+    {name:"Torque converter to flexplate",val:"46 ft-lb",note:"Rotate and torque all 3 bolts"},
+    {name:"Transmission crossmember",val:"35 ft-lb",note:""},
+    {name:"Driveshaft U-bolt nuts",val:"15 ft-lb",note:""},
+    {name:"Pinion yoke nut",val:"200–210 ft-lb",note:""},
+    {name:"Ring gear bolts",val:"55–70 ft-lb",note:"Apply thread locker"},
+    {name:"Diff cover bolts",val:"20–25 ft-lb",note:""},
+  ]},
+  {category:"Suspension & Steering",specs:[
+    {name:"Front upper ball joint nut",val:"50 ft-lb",note:""},
+    {name:"Front lower ball joint nut",val:"83 ft-lb",note:""},
+    {name:"Tie rod end nuts",val:"35 ft-lb",note:"Minimum — align to cotter pin"},
+    {name:"Wheel lug nuts",val:"100 ft-lb",note:""},
+    {name:"Torque arm rear pivot bolt",val:"75 ft-lb",note:""},
+    {name:"Torque arm front bracket bolts",val:"45 ft-lb",note:""},
+    {name:"Panhard bar bolts",val:"75 ft-lb",note:""},
+  ]},
+  {category:"Brakes",specs:[
+    {name:"Brake caliper slide pins",val:"35 ft-lb",note:""},
+    {name:"Caliper bracket bolts (front)",val:"70 ft-lb",note:""},
+    {name:"Brake master cylinder nuts",val:"20 ft-lb",note:""},
+    {name:"Brake booster nuts",val:"15 ft-lb",note:""},
+    {name:"Brake line fittings",val:"11–15 ft-lb",note:"Use a proper line wrench"},
+  ]},
+];
+
+const PROBLEMS = [
+  {title:"TBI Fuel Pump Failure",sev:"high",sevLabel:"Critical",desc:"The stock in-tank fuel pump on Gen 3s is known to fail — especially if the tank is frequently run low. Low fuel means the pump runs hot since it relies on fuel for cooling.",fix:"<strong>Fix:</strong> Always keep at least 1/4 tank. When replacing, use a Walbro or Delphi in-tank unit. Verify fuel pressure is 9–13 psi at the TBI."},
+  {title:"ECM / MEMCAL Corruption",sev:"high",sevLabel:"Critical",desc:"The 1989 ECM uses a removable MEMCAL chip. These are 35+ years old and can fail. A bad MEMCAL causes hard starts, rich/lean conditions, and erratic idle.",fix:"<strong>Fix:</strong> Source a known-good ECM with a matching VIN MEMCAL, or send your unit to a TBI tuner for a fresh chip burn."},
+  {title:"7.5\" 10-Bolt Weakness",sev:"high",sevLabel:"Critical",desc:"The stock 7.5\" 10-bolt is the weakest axle GM ever put under an F-body. Any real power or aggressive track driving will break it — spider gears go first.",fix:"<strong>Fix:</strong> Upgrade to an 8.5\" 10-bolt or a 12-bolt swap. Add a posi unit at minimum. For track use this is not optional."},
+  {title:"Torque Arm Bushing Wear",sev:"med",sevLabel:"Watch",desc:"The rubber bushings in the torque arm and rear control arms rot over time. Worn bushings cause rear axle hop on hard launches and vague handling.",fix:"<strong>Fix:</strong> Replace with polyurethane bushings (Energy Suspension kit) or go full aftermarket with an adjustable torque arm."},
+  {title:"Coolant Crossover Leaks",sev:"med",sevLabel:"Watch",desc:"The factory intake manifold has coolant passages. After decades, the end rails crack or the gaskets fail, causing coolant to leak into the valley or into the oil.",fix:"<strong>Fix:</strong> Use Fel-Pro intake gaskets with the metal end rails (not rubber). Apply RTV at the four corners."},
+  {title:"T-Top Leaks",sev:"med",sevLabel:"Watch",desc:"T-top equipped cars almost universally have leaking seals after this many years. Water intrudes at the corners and rots the roof structure.",fix:"<strong>Fix:</strong> Replace all T-top weatherstripping. Check the drain channels — they route to the A and C pillars and clog with debris."},
+  {title:"HEI Ignition Module Failure",sev:"med",sevLabel:"Watch",desc:"The ignition module inside the HEI cap is a common failure point when hot. Symptoms: car starts fine cold but dies after 20–30 minutes and won't restart until cool.",fix:"<strong>Fix:</strong> Carry a spare module — they are cheap. Apply dielectric grease between the module and the distributor plate for heat transfer."},
+  {title:"Brake Proportioning Valve",sev:"med",sevLabel:"Watch",desc:"The combination valve integrates the proportioning valve, brake switch, and metering valve. On older cars the pressure differential valve can center incorrectly.",fix:"<strong>Fix:</strong> Reset the valve by applying firm pressure to the pedal after a hard stop. If the light stays on, replace the combination valve."},
+  {title:"Power Steering Box Wear",sev:"low",sevLabel:"Monitor",desc:"If your build retains the factory steering box, the box wears out and develops excessive play. This makes precise driving difficult, especially at speed.",fix:"<strong>Fix:</strong> Rebuild or replace the steering box. A rack-and-pinion swap is a popular upgrade that dramatically improves feel."},
+  {title:"Body Seam Rust",sev:"low",sevLabel:"Monitor",desc:"Water pools in the rear hatch channels and rocker panels. These areas rust from the inside out, and by the time you see surface rust the inner structure is often already compromised.",fix:"<strong>Fix:</strong> Cut, patch, and treat any rust before painting. Spray Eastwood Rust Encapsulator inside the rockers through drain holes."},
+  {title:"IAC Valve Issues",sev:"low",sevLabel:"Monitor",desc:"The IAC valve regulates idle speed. Carbon buildup causes it to stick, resulting in erratic idle, idle surge, or stalling when coming to a stop.",fix:"<strong>Fix:</strong> Remove and clean the IAC valve and bore with throttle body cleaner. Never use the IAC to adjust base idle; set that with the idle stop screw."},
+];
+
+
+// ══════════════════════════════════════════
+// FIREBASE REST API — no SDK, works everywhere
+// ══════════════════════════════════════════
+const FB_URL = 'https://camaro-build-default-rtdb.firebaseio.com';
+
+async function fbGet(path) {
+  try {
+    const res = await fetch(`${FB_URL}/${path}.json`);
+    return await res.json();
+  } catch(e) { return null; }
+}
+
+async function fbSet(path, value) {
+  setSyncStatus('syncing');
+  flashSyncBar();
+  try {
+    await fetch(`${FB_URL}/${path}.json`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(value)
+    });
+    setSyncStatus('live');
+  } catch(e) { setSyncStatus('offline'); }
+}
+
+// Long-poll for real-time updates (Server-Sent Events)
+let lastEtag = '';
+function startSSE() {
+  const es = new EventSource(`${FB_URL}/.json`);
+  es.addEventListener('put', e => {
+    try {
+      const payload = JSON.parse(e.data);
+      const data = payload.data;
+      if (!data) return;
+
+      // States
+      if (data.states) {
+        let changed = false;
+        Object.entries(data.states).forEach(([k,v]) => {
+          if (states[k] !== v) { states[k] = v; changed = true; }
+        });
+        if (changed) { updateSummary(); renderChecklist(); }
+      }
+
+      // Notes
+      if (data.notes) {
+        const prev = JSON.stringify(notesData);
+        notesData = data.notes;
+        if (JSON.stringify(notesData) !== prev &&
+            document.getElementById('page-notes').classList.contains('active')) buildNotes();
+      }
+
+      // Budget
+      if (data.budget) {
+        budgetData = data.budget;
+        updateBudgetSummary();
+        if (document.getElementById('page-budget').classList.contains('active')) buildBudget();
+      }
+
+      // Budget goal
+      if (data.budgetGoal !== undefined) {
+        document.getElementById('budget-goal').value = data.budgetGoal || '';
+        updateBudgetSummary();
+      }
+
+      // Activity toast
+      if (data.lastAction && data.lastAction.msg) {
+        const age = Date.now() - (data.lastAction.ts || 0);
+        if (age < 10000 && data.lastAction.deviceId !== DEVICE_ID) {
+          showToast('📱 ' + data.lastAction.msg);
+        }
+      }
+    } catch(err) {}
+  });
+  es.onerror = () => { setSyncStatus('offline'); setTimeout(startSSE, 5000); };
+  es.onopen = () => setSyncStatus('live');
+}
+
+// Initial load from Firebase
+async function loadFromFirebase() {
+  setSyncStatus('syncing');
+  const data = await fbGet('');
+  if (data) {
+    if (data.states) {
+      Object.entries(data.states).forEach(([k,v]) => { states[k] = v; });
+    }
+    if (data.notes)  notesData  = data.notes;
+    if (data.budget) budgetData = data.budget;
+    if (data.budgetGoal) {
+      document.getElementById('budget-goal').value = data.budgetGoal;
+    }
+    setSyncStatus('live');
+  } else {
+    setSyncStatus('offline');
+  }
+  updateSummary();
+  renderChecklist();
+  startSSE();
+}
+
+function logAction(msg) {
+  fbSet('lastAction', { msg, ts: Date.now(), deviceId: DEVICE_ID });
+}
+
+// ── Sync UI helpers ──
+const syncDot   = document.getElementById('sync-dot');
+const syncLabel = document.getElementById('sync-label');
+const syncBar   = document.getElementById('sync-bar-fill');
+const toast     = document.getElementById('activity-toast');
+let toastTimer  = null;
+
+function setSyncStatus(status) {
+  syncDot.className = 'sync-dot ' + status;
+  if (status === 'live')    syncLabel.textContent = 'LIVE';
+  if (status === 'syncing') syncLabel.textContent = 'SYNC';
+  if (status === 'offline') syncLabel.textContent = 'OFF';
+}
+function flashSyncBar() {
+  syncBar.classList.add('active');
+  setTimeout(() => syncBar.classList.remove('active'), 800);
+}
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Online/offline detection
+window.addEventListener('online',  () => { setSyncStatus('live');    loadFromFirebase(); });
+window.addEventListener('offline', () => setSyncStatus('offline'));
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let states = {}, notesData = {}, budgetData = {};
+
+// Unique device ID so we don't show our own toasts
+const DEVICE_ID = localStorage.getItem('camaro_device_id') || (() => {
+  const id = 'dev_' + Math.random().toString(36).slice(2, 9);
+  localStorage.setItem('camaro_device_id', id);
+  return id;
+})();
+
+// Init states with defaults
+DATA.forEach((sec, si) => sec.items.forEach((_, ii) => {
+  const k = `${si}-${ii}`; states[k] = false;
+}));
+
+let activeFilter='all', searchVal='';
+
+
+// ══════════════════════════════════════════
+// SUMMARY
+// ══════════════════════════════════════════
+function updateSummary(){
+  const total=Object.keys(states).length, done=Object.values(states).filter(Boolean).length;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('p-done').textContent=done;
+  document.getElementById('p-left').textContent=total-done;
+  document.getElementById('p-total').textContent=total;
+  document.getElementById('p-pct').textContent=pct+'%';
+  document.getElementById('p-fill').style.width=pct+'%';
+  document.getElementById('hdr-pct').textContent=pct+'%';
+}
+
+// ══════════════════════════════════════════
+// CHECKLIST
+// ══════════════════════════════════════════
+function renderChecklist(){
+  const wrap=document.getElementById('sections');
+  wrap.innerHTML='';
+  DATA.forEach((sec,si)=>{
+    const visItems=sec.items.filter((item,ii)=>{
+      const k=`${si}-${ii}`;
+      const fOk=activeFilter==='all'||(activeFilter==='done'?states[k]:!states[k]);
+      const sOk=!searchVal||(item.label+(item.note||'')).toLowerCase().includes(searchVal.toLowerCase());
+      return fOk&&sOk;
+    });
+    if(!visItems.length)return;
+    const secDone=sec.items.filter((_,ii)=>states[`${si}-${ii}`]).length;
+    const secTotal=sec.items.length;
+    const pct=Math.round((secDone/secTotal)*100);
+    const circ=2*Math.PI*14;
+    const offset=circ-(pct/100)*circ;
+
+    const card=document.createElement('div');
+    card.className='section-card';
+    card.innerHTML=`
+      <div class="section-head">
+        <div class="sec-icon-box">${sec.icon}</div>
+        <div class="sec-info">
+          <div class="sec-title">${sec.section}</div>
+          <div class="sec-sub">${secDone} of ${secTotal} done</div>
+        </div>
+        <div class="sec-right">
+          <svg class="sec-ring" viewBox="0 0 36 36">
+            <circle class="ring-bg" cx="18" cy="18" r="14"/>
+            <circle class="ring-fg" cx="18" cy="18" r="14" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+          </svg>
+          <span class="sec-chev">▼</span>
+        </div>
+      </div>
+      <div class="section-items"></div>`;
+
+    const itemsDiv=card.querySelector('.section-items');
+    visItems.forEach(item=>{
+      const origIdx=sec.items.indexOf(item);
+      const key=`${si}-${origIdx}`;
+      const row=document.createElement('div');
+      row.className=`item-row${states[key]?' done':''}`;
+      row.innerHTML=`
+        <div class="item-cb"><span class="item-cb-check">✓</span></div>
+        <div class="item-content">
+          <div class="item-label">${item.label}</div>
+          ${item.note?`<div class="item-note">${item.note}</div>`:''}
+        </div>`;
+      row.addEventListener('click',()=>{
+        states[key]=!states[key];
+        fbSet('states/'+key, states[key]);
+        logAction((states[key]?'✅ Checked':'⬜ Unchecked')+' '+item.label);
+        updateSummary();
+        renderChecklist();
+      });
+      itemsDiv.appendChild(row);
+    });
+
+    card.querySelector('.section-head').addEventListener('click',()=>{
+      card.classList.toggle('open');
+    });
+    wrap.appendChild(card);
+  });
+  updateSummary();
+}
+
+document.getElementById('search').addEventListener('input',e=>{searchVal=e.target.value;renderChecklist();});
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click',()=>{
+    activeFilter=p.dataset.f;
+    document.querySelectorAll('.pill').forEach(x=>x.classList.toggle('active',x===p));
+    renderChecklist();
+  });
+});
+
+// ══════════════════════════════════════════
+// NOTES
+// ══════════════════════════════════════════
+const notesSel=document.getElementById('notes-select');
+DATA.forEach((sec,si)=>{const o=document.createElement('option');o.value=String(si);o.textContent=sec.section;notesSel.appendChild(o);});
+
+function buildNotes(){
+  const search=(document.getElementById('notes-search').value||'').toLowerCase();
+  const secF=document.getElementById('notes-select').value;
+  const list=document.getElementById('notes-list');
+  list.innerHTML='';
+  DATA.forEach((sec,si)=>{
+    if(secF&&secF!==String(si))return;
+    sec.items.forEach((item,ii)=>{
+      if(search&&!item.label.toLowerCase().includes(search))return;
+      const key=`${si}-${ii}`;
+      const nd=notesData[key]||{};
+      const card=document.createElement('div');
+      card.className='note-card';
+      card.innerHTML=`
+        <div class="note-card-title">${item.label}</div>
+        <div class="note-card-sec">${sec.section}</div>
+        <div class="note-fields">
+          <div class="note-field">
+            <div class="note-field-label">Vendor</div>
+            <input class="note-input" data-key="${key}" data-field="vendor" type="text" value="${nd.vendor||''}" placeholder="Summit, RockAuto…" />
+          </div>
+          <div class="note-field">
+            <div class="note-field-label">Part #</div>
+            <input class="note-input" data-key="${key}" data-field="partnum" type="text" value="${nd.partnum||''}" placeholder="Part number" />
+          </div>
+          <div class="note-field">
+            <div class="note-field-label">Cost Paid ($)</div>
+            <input class="note-input" data-key="${key}" data-field="cost" type="number" value="${nd.cost||''}" placeholder="0.00" />
+          </div>
+          <div class="note-field">
+            <div class="note-field-label">Notes</div>
+            <input class="note-input" data-key="${key}" data-field="note" type="text" value="${nd.note||''}" placeholder="Notes…" />
+          </div>
+        </div>`;
+      card.querySelectorAll('.note-input').forEach(inp=>{
+        inp.addEventListener('change',()=>{
+          const k=inp.dataset.key,f=inp.dataset.field;
+          if(!notesData[k])notesData[k]={};
+          notesData[k][f]=inp.value;
+          if(f==='cost'){
+            budgetData[k]=parseFloat(inp.value)||0;
+            fbSet('budget/'+k, budgetData[k]);
+            updateBudgetSummary();
+          }
+          fbSet('notes/'+k, notesData[k]);
+        });
+      });
+      list.appendChild(card);
+    });
+  });
+}
+document.getElementById('notes-search').addEventListener('input',buildNotes);
+document.getElementById('notes-select').addEventListener('change',buildNotes);
+
+// ══════════════════════════════════════════
+// BUDGET
+// ══════════════════════════════════════════
+function updateBudgetSummary(){
+  const vals=Object.values(budgetData).filter(v=>v>0);
+  const total=vals.reduce((a,b)=>a+b,0);
+  const goal=parseFloat(document.getElementById('budget-goal').value)||0;
+  const fmt=v=>'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('b-spent').textContent=fmt(total);
+  document.getElementById('b-logged').textContent=vals.length;
+  document.getElementById('b-goal-disp').textContent=goal?fmt(goal):'—';
+  const rem=goal-total;
+  const remEl=document.getElementById('b-remain');
+  remEl.textContent=goal?fmt(rem):'—';
+  remEl.className='b-card-val '+(rem<0?'neg':'pos');
+}
+
+function buildBudget(){
+  const list=document.getElementById('budget-list');
+  list.innerHTML='';
+  DATA.forEach((sec,si)=>{
+    sec.items.forEach((item,ii)=>{
+      const key=`${si}-${ii}`;
+      const row=document.createElement('div');
+      row.className='budget-item';
+      row.innerHTML=`
+        <div class="budget-item-info">
+          <div class="budget-item-name">${item.label}</div>
+          <div class="budget-item-sec">${sec.section}</div>
+        </div>
+        <input class="budget-cost-input" type="number" data-key="${key}" value="${budgetData[key]||''}" placeholder="$0" />`;
+      row.querySelector('input').addEventListener('change',e=>{
+        budgetData[key]=parseFloat(e.target.value)||0;
+        if(!notesData[key])notesData[key]={};
+        notesData[key].cost=e.target.value;
+        fbSet('budget/'+key, budgetData[key]);
+        fbSet('notes/'+key, notesData[key]);
+        updateBudgetSummary();
+      });
+      list.appendChild(row);
+    });
+  });
+  updateBudgetSummary();
+}
+document.getElementById('budget-goal').addEventListener('change',e=>{
+  fbSet('budgetGoal', parseFloat(e.target.value)||0);
+  updateBudgetSummary();
+});
+
+// ══════════════════════════════════════════
+// BUILD ORDER
+// ══════════════════════════════════════════
+function buildBuildOrder(){
+  const list=document.getElementById('build-list');
+  list.innerHTML='';
+  BUILD_ORDER.forEach(ph=>{
+    const card=document.createElement('div');
+    card.className='phase-card';
+    card.innerHTML=`
+      <div class="phase-head">
+        <div class="phase-num-badge">${ph.phase}</div>
+        <div class="phase-info">
+          <div class="phase-title">${ph.title}</div>
+          <div class="phase-sub">${ph.sub}</div>
+        </div>
+        <span class="phase-chev">▼</span>
+      </div>
+      <div class="phase-steps">
+        ${ph.steps.map(s=>`<div class="phase-step"><span class="step-arr">→</span>${s}</div>`).join('')}
+      </div>`;
+    card.querySelector('.phase-head').addEventListener('click',()=>card.classList.toggle('open'));
+    list.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════
+// TORQUE & PROBLEMS
+// ══════════════════════════════════════════
+function buildTorque(){
+  const div=document.getElementById('ref-torque');
+  div.innerHTML='';
+  TORQUE_DATA.forEach(cat=>{
+    const sec=document.createElement('div');
+    sec.className='torque-section';
+    sec.innerHTML=`<div class="torque-section-title">${cat.category}</div>
+      ${cat.specs.map(s=>`
+        <div class="torque-row">
+          <div><div class="torque-name">${s.name}</div>${s.note?`<div class="torque-note-t">${s.note}</div>`:''}</div>
+          <div class="torque-val">${s.val}</div>
+        </div>`).join('')}`;
+    div.appendChild(sec);
+  });
+}
+
+function buildProblems(){
+  const div=document.getElementById('ref-problems');
+  div.innerHTML='';
+  PROBLEMS.forEach(p=>{
+    const card=document.createElement('div');
+    card.className=`prob-card sev-${p.sev}`;
+    card.innerHTML=`
+      <div class="prob-strip"></div>
+      <div class="prob-inner">
+        <div class="prob-top">
+          <div class="prob-name">${p.title}</div>
+          <span class="sev-badge">${p.sevLabel}</span>
+        </div>
+        <div class="prob-desc">${p.desc}</div>
+        <div class="prob-fix">${p.fix}</div>
+      </div>`;
+    div.appendChild(card);
+  });
+}
+
+// Ref sub-tabs
+document.querySelectorAll('[data-ref]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-ref]').forEach(b=>b.classList.toggle('active',b===btn));
+    document.getElementById('ref-torque').style.display=btn.dataset.ref==='torque'?'block':'none';
+    document.getElementById('ref-problems').style.display=btn.dataset.ref==='problems'?'block':'none';
+  });
+});
+
+// ══════════════════════════════════════════
+// PAGE NAVIGATION
+// ══════════════════════════════════════════
+const pages={checklist:'page-checklist',notes:'page-notes',budget:'page-budget',buildorder:'page-buildorder',ref:'page-ref'};
+let builtPages={checklist:false,notes:false,budget:false,buildorder:false,ref:false};
+
+function showPage(name){
+  Object.values(pages).forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(pages[name]).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===name));
+  if(!builtPages[name]){
+    builtPages[name]=true;
+    if(name==='notes')buildNotes();
+    if(name==='budget')buildBudget();
+    if(name==='buildorder')buildBuildOrder();
+    if(name==='ref'){buildTorque();buildProblems();}
+  }
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>showPage(tab.dataset.page));
+});
+
+// Init — load from Firebase first, then start live sync
+loadFromFirebase();
+
+// ══════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════
+let apiKey=localStorage.getItem('camaro_api_key')||'';
+let chatHistory=[];
+
+const backdrop=document.getElementById('chat-backdrop');
+const drawer=document.getElementById('chat-drawer');
+const aiOpenBtn=document.getElementById('ai-open-btn');
+const chatCloseBtn=document.getElementById('chat-close');
+const apiKeyInput=document.getElementById('api-key');
+const apiSaveBtn=document.getElementById('api-save');
+const sendBtn=document.getElementById('chat-send');
+const chatInput=document.getElementById('chat-input');
+const msgsDiv=document.getElementById('chat-msgs');
+const noKeyMsg=document.getElementById('no-key-msg');
+
+if(apiKey){apiKeyInput.value=apiKey;sendBtn.disabled=false;noKeyMsg.style.display='none';}
+
+function openChat(){backdrop.classList.add('open');drawer.classList.add('open');}
+function closeChat(){backdrop.classList.remove('open');drawer.classList.remove('open');}
+
+aiOpenBtn.addEventListener('click',openChat);
+backdrop.addEventListener('click',closeChat);
+chatCloseBtn.addEventListener('click',closeChat);
+
+apiSaveBtn.addEventListener('click',()=>{
+  apiKey=apiKeyInput.value.trim();
+  if(apiKey){
+    localStorage.setItem('camaro_api_key',apiKey);
+    sendBtn.disabled=false;
+    noKeyMsg.style.display='none';
+    apiSaveBtn.textContent='SAVED!';
+    setTimeout(()=>apiSaveBtn.textContent='SAVE',1500);
+  }
+});
+
+function appendMsg(role,text,typing){
+  const msg=document.createElement('div');
+  msg.className=`chat-msg ${role==='user'?'user':'ai'}`;
+  const av=document.createElement('div');
+  av.className='chat-av';
+  av.textContent=role==='user'?'YOU':'AI';
+  const bubble=document.createElement('div');
+  bubble.className=`chat-bubble${typing?' typing':''}`;
+  bubble.textContent=text;
+  msg.appendChild(av);msg.appendChild(bubble);
+  msgsDiv.appendChild(msg);
+  msgsDiv.scrollTop=msgsDiv.scrollHeight;
+  return bubble;
+}
+
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();}});
+sendBtn.addEventListener('click',doSend);
+
+async function doSend(){
+  const text=chatInput.value.trim();
+  if(!text||!apiKey)return;
+  chatInput.value='';sendBtn.disabled=true;
+  appendMsg('user',text);
+  chatHistory.push({role:'user',content:text});
+  const tb=appendMsg('ai','Thinking…',true);
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:1024,
+        system:`You are a knowledgeable 1989 Gen 3 Camaro build assistant. The user is building a Camaro from a bare frame with a stock 305/350 TBI V8 for street and occasional track use. Give specific, practical advice about parts sourcing, installation, specs, and tips. Be conversational and direct. Keep responses concise — a few sentences to a short paragraph unless a detailed answer is needed.`,
+        messages:chatHistory
+      })
+    });
+    const data=await res.json();
+    if(data.error)throw new Error(data.error.message);
+    const reply=data.content.map(b=>b.text||'').join('');
+    tb.className='chat-bubble';tb.textContent=reply;
+    chatHistory.push({role:'assistant',content:reply});
+  }catch(err){
+    tb.className='chat-bubble';
+    tb.textContent='Error: '+(err.message||'Could not reach API. Check your key.');
+    tb.style.color='var(--accent)';
+    chatHistory.pop();
+  }
+  sendBtn.disabled=false;
+  msgsDiv.scrollTop=msgsDiv.scrollHeight;
+}
+</script>
+</body>
+</html>
